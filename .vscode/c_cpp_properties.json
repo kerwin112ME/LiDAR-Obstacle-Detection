@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/include/**",
+                "/usr/include/pcl-1.7",
+                "/usr/include/pcl-1.7/pcl/**",
+                "/usr/include/eigen3",
+                "/usr/include/eigen3",
+                "/usr/include/vtk-6.2",
+                "/usr/include/vtk-6.2",
+                "/usr/include/boost/tr1/tr1",
+                "/usr/include/c++/5",
+                "/usr/include/x86_64-linux-gnu/c++/5",
+                "/usr/include/x86_64-linux-gnu/c++/7",
+                "/usr/include/x86_64-linux-gnu",
+                "/home/workspace/SFND_Lidar_Obstacle_Detection/src/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x86"
+        }
+    ],
+    "version": 4
+}
