@@ -16,7 +16,8 @@
                 "/usr/include/x86_64-linux-gnu/c++/5",
                 "/usr/include/x86_64-linux-gnu/c++/7",
                 "/usr/include/x86_64-linux-gnu",
-                "/home/workspace/SFND_Lidar_Obstacle_Detection/src/**"
+                "/home/workspace/SFND_Lidar_Obstacle_Detection/src/**",
+                "/usr/include/pcl-1.8"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

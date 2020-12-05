@@ -21,19 +21,50 @@ void ProcessPointClouds<PointT>::numPoints(typename pcl::PointCloud<PointT>::Ptr
 
 
 template<typename PointT>
-typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(typename pcl::PointCloud<PointT>::Ptr cloud, float filterRes, Eigen::Vector4f minPoint, Eigen::Vector4f maxPoint)
+typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(typename pcl::PointCloud<PointT>::Ptr cloud, 
+                                                        float filterRes, Eigen::Vector4f minPoint, Eigen::Vector4f maxPoint)
 {
 
     // Time segmentation process
     auto startTime = std::chrono::steady_clock::now();
 
     // TODO:: Fill in the function to do voxel grid point reduction and region based filtering
+    typename pcl::PointCloud<PointT>::Ptr cloud_vg(new pcl::PointCloud<PointT>());
+    typename pcl::VoxelGrid<PointT> vg;
+    vg.setInputCloud(cloud);
+    vg.setLeafSize(filterRes, filterRes, filterRes);
+    vg.filter(*cloud_vg);
+
+    typename pcl::PointCloud<PointT>::Ptr cloud_ROI(new pcl::PointCloud<PointT>());
+    typename pcl::CropBox<PointT> ROI(true);
+    ROI.setInputCloud(cloud_vg);
+    ROI.setMin(minPoint);
+    ROI.setMax(maxPoint);
+    ROI.filter(*cloud_ROI);
+
+    std::vector<int> cropIndices;
+    typename pcl::CropBox<PointT> deRoof(true);
+    deRoof.setInputCloud(cloud_ROI);
+    deRoof.setMin(Eigen::Vector4f(-2, -2, -2, 1));
+    deRoof.setMax(Eigen::Vector4f(3, 2, 1, 1));
+    deRoof.filter(cropIndices);
+
+    pcl::PointIndices::Ptr roof(new pcl::PointIndices);
+    for(int ind: cropIndices) roof->indices.push_back(ind);
+
+    typename pcl::PointCloud<PointT>::Ptr cloud_filtered(new pcl::PointCloud<PointT>());
+    typename pcl::ExtractIndices<PointT> extract;
+    extract.setInputCloud(cloud_ROI);
+    extract.setIndices(roof);
+    extract.setNegative(true);
+    extract.filter(*cloud_filtered);
+
 
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
     std::cout << "filtering took " << elapsedTime.count() << " milliseconds" << std::endl;
 
-    return cloud;
+    return cloud_filtered;
 
 }
 
