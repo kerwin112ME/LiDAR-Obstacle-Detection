@@ -1,10 +1,6 @@
-/* \author Aaron Brown */
-// Quiz on implementing kd tree
+#ifndef KDTREE_H
+#define KDTREE_H
 
-#include "../../render/render.h"
-
-
-// Structure to represent node of kd tree
 struct Node
 {
 	std::vector<float> point;
@@ -27,13 +23,11 @@ struct KdTree
 
 	void insert(std::vector<float> point, int id)
 	{
-		// TODO: Fill in this function to insert a new point into the tree
-		// the function should create a new node and place correctly with in the root 
 		insert(root, point, 0, id);
 	}
 
 	void insert(Node *&root, const std::vector<float> &point, int depth, const int &id) {
-		int split = depth % 2;
+		int split = depth % 3;
 
 		if(!root) root = new Node(point, id);
 		else if(root->point[split] > point[split]) 
@@ -46,11 +40,13 @@ struct KdTree
 	std::vector<int> search(std::vector<float> target, float distanceTol)
 	{
 		std::vector<int> ids;
-		std::vector<float> box(4,0); // boundary of the tolerance box
+		std::vector<float> box(6,0); // boundary of the tolerance box
 		box[0] = target[0] - distanceTol; // lefter
 		box[1] = target[0] + distanceTol; // righter
 		box[2] = target[1] - distanceTol; // lower
 		box[3] = target[1] + distanceTol; // upper
+		box[4] = target[2] - distanceTol; // back
+		box[5] = target[2] + distanceTol; // front
 		searchHelper(root, 0, ids, box, target, distanceTol);
 
 		return ids;
@@ -59,15 +55,10 @@ struct KdTree
 	void searchHelper(Node *root, int depth, std::vector<int> &ids, std::vector<float> &box, const std::vector<float> &target, const float &distanceTol) {
 		if(!root) return;
 
-		int split = depth % 2;
-		/**
-		if(root->point[0] <= box[1] && root->point[0] >= box[0] && root->point[1] <= box[3] && root->point[1] >= box[2]) {
-			float dist = sqrt((root->point[0]-target[0])*(root->point[0]-target[0]) + (root->point[1]-target[1])*(root->point[1]-target[1]));
-			if(dist <= distanceTol)
-				ids.push_back(root->id);
-		}
-		**/
-		float dist = sqrt((root->point[0]-target[0])*(root->point[0]-target[0]) + (root->point[1]-target[1])*(root->point[1]-target[1]));
+		int split = depth % 3;
+		
+		float dist = sqrt((root->point[0]-target[0])*(root->point[0]-target[0]) + (root->point[1]-target[1])*(root->point[1]-target[1]) + 
+																					(root->point[2]-target[2])*(root->point[2]-target[2]));
 		if(dist <= distanceTol)
 			ids.push_back(root->id);
 
@@ -81,5 +72,5 @@ struct KdTree
 };
 
 
-
+#endif /* KDTREE_H */
 

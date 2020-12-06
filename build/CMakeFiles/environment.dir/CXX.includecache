@@ -6,7 +6,15 @@
 
 #IncludeRegexTransform: 
 
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/cluster.h
+kdtree.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
+climits
+-
+
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/environment.cpp
+unordered_set
+-
 sensors/lidar.h
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/sensors/lidar.h
 render/render.h
@@ -15,6 +23,14 @@ processPointClouds.h
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.h
 processPointClouds.cpp
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.cpp
+cluster.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/cluster.h
+ransac.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/ransac.h
+kdtree.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
+
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
 
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.cpp
 processPointClouds.h
@@ -51,6 +67,16 @@ chrono
 -
 render/box.h
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/render/box.h
+
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/ransac.h
+unordered_set
+-
+random
+-
+iostream
+-
+cmath
+-
 
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/render/box.h
 Eigen/Geometry
