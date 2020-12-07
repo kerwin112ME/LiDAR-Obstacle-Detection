@@ -135,7 +135,7 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
 
   	///// clustering the obstacles /////
   	std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters;
-    std::vector<std::vector<int>> obsClusters = euclideanCluster(obsPoints, obstaclesTree, 0.5, 10, 2000);
+    std::vector<std::vector<int>> obsClusters = euclideanCluster(obsPoints, obstaclesTree, 0.47, 10, 2000);
     for(std::vector<int> clusterIndices: obsClusters) {
     	pcl::PointCloud<pcl::PointXYZI>::Ptr cluster (new pcl::PointCloud<pcl::PointXYZI>());
     	for(int &ind: clusterIndices)
