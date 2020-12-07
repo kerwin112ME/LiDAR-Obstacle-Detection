@@ -17,10 +17,20 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
+#include <unordered_set>
 #include "../src/render/box.h"
+#include "kdtree.h"
 
 template<typename PointT>
 class ProcessPointClouds {
+private:
+    void proximity(const std::vector<std::vector<float>>& points, const int &id, 
+        KdTree *tree, std::vector<int> &cluster, bool isProcessed[], const float &distanceTol);
+
+    std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol, int minSize = 0, int maxSize = INT_MAX);
+
+    std::unordered_set<int> Ransac3D(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, int maxIterations, float distanceTol);
+
 public:
 
     //constructor
@@ -46,7 +56,10 @@ public:
 
     std::vector<boost::filesystem::path> streamPcd(std::string dataPath);
 
-    
+    // self-implemented
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> MySeparateClouds(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, int maxIterations, float distanceTol);
+
+    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> MyClustering(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, float clusterTolerance, int minSize = 0, int maxSize = INT_MAX);   
   
 };
 #endif /* PROCESSPOINTCLOUDS_H_ */

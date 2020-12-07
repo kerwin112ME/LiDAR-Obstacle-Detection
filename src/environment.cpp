@@ -1,14 +1,10 @@
-/* \author Aaron Brown */
-// Create simple 3d highway enviroment using PCL
-// for exploring self-driving car sensors
-
 #include <unordered_set>
 #include "sensors/lidar.h"
 #include "render/render.h"
 #include "processPointClouds.h"
 #include "processPointClouds.cpp" // using templates for processPointClouds so also include .cpp to help linker
-#include "cluster.h"
-#include "ransac.h"
+// #include "cluster.h"
+// #include "ransac.h"
 #include "kdtree.h"
 
 std::vector<Car> initHighway(bool renderScene, pcl::visualization::PCLVisualizer::Ptr& viewer)
@@ -102,61 +98,30 @@ void initCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& vi
 void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZI>* pointProcessorI, 
 															const pcl::PointCloud<pcl::PointXYZI>::Ptr& inputCloud)
 {
-  	///// downsize the cloud to increase effeciency /////
+  	// downsize the cloud to increase effeciency
   	pcl::PointCloud<pcl::PointXYZI>::Ptr filterCloud = 
   		pointProcessorI->FilterCloud(inputCloud, 0.2f, Eigen::Vector4f(-20, -6, -2, 1), Eigen::Vector4f(20, 7, 2, 1));
 
-  	///// segment the ground plane from other obstacles /////
-  	std::unordered_set<int> planeIndices = Ransac3D(filterCloud, 100, 0.2);
-  	pcl::PointIndices::Ptr groundPlane (new pcl::PointIndices);
-  	for(auto &ind: planeIndices) groundPlane->indices.push_back(ind);
+  	// segment the ground plane from other obstacles 
+  	std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> separatedCloud = pointProcessorI->MySeparateClouds(filterCloud, 100, 0.2);
 
-  	pcl::PointCloud<pcl::PointXYZI>::Ptr groundPlaneCloud (new pcl::PointCloud<pcl::PointXYZI>());
-  	pcl::PointCloud<pcl::PointXYZI>::Ptr obstacles (new pcl::PointCloud<pcl::PointXYZI>());
-  	pcl::ExtractIndices<pcl::PointXYZI> extract;
-    extract.setInputCloud(filterCloud);
-    extract.setIndices(groundPlane);
-    extract.setNegative(false); // extract the inliers (ground plane)
-    extract.filter(*groundPlaneCloud);
-    extract.setNegative(true); // extract the obstacles
-    extract.filter(*obstacles);
+    renderPointCloud(viewer, separatedCloud.first, "plane", Color(0,1,0));
 
-    renderPointCloud(viewer, groundPlaneCloud, "plane", Color(0,1,0));
-
-    ///// build the kd-tree /////
-    KdTree *obstaclesTree (new KdTree());
-    std::vector<std::vector<float>> obsPoints;
-    for(int ind = 0; ind < obstacles->points.size(); ind++) {
-    	auto data = obstacles->points[ind];
-    	std::vector<float> point = {data.x, data.y, data.z};
-    	obsPoints.push_back(point);
-    	obstaclesTree->insert(point, ind);
-    }
-
-  	///// clustering the obstacles /////
-  	std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters;
-    std::vector<std::vector<int>> obsClusters = euclideanCluster(obsPoints, obstaclesTree, 0.47, 10, 2000);
-    for(std::vector<int> clusterIndices: obsClusters) {
-    	pcl::PointCloud<pcl::PointXYZI>::Ptr cluster (new pcl::PointCloud<pcl::PointXYZI>());
-    	for(int &ind: clusterIndices)
-    		cluster->points.emplace_back(std::move(obstacles->points[ind]));
-
-    	cloudClusters.push_back(cluster);
-    }
+    // clustering obstacles
+    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->MyClustering(separatedCloud.second, 0.47, 10, 2000);
 
   	int clusterId = 0;
   	std::vector<Color> colors = {Color(1,0,0), Color(0,1,0), Color(0,0,1)};
 
-  	///// bounding box /////
+  	// bounding box 
   	for(pcl::PointCloud<pcl::PointXYZI>::Ptr cluster: cloudClusters) {
-      	//std::cout << "cluster size ";
-      	//pointProcessorI->numPoints(cluster);
       	renderPointCloud(viewer, cluster, "obstCloud"+std::to_string(clusterId), colors[clusterId]);
       	++ clusterId;
 
       	Box box = pointProcessorI->BoundingBox(cluster);
       	renderBox(viewer, box, clusterId);
   	}
+
 }
 
 
