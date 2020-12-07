@@ -1,6 +1,7 @@
 # LiDAR-Obstacle-Detection
 First project of Udacity Sensor Fusion Nanodegree Program. 
-Segment and detect obstacles from real lidar point cloud data using self-implemented kd-tree, euclidean clustering, RANSAC segmentation functions.
+Segment and detect obstacles from real lidar point cloud data using self-implemented kd-tree, euclidean clustering, RANSAC segmentation functions.  
+![](gif/lidar.gif)
 
 ## How To Run
 ```
