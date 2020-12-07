@@ -6,37 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/cluster.h
+../include/cluster.h
 kdtree.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
+../include/kdtree.h
 climits
 -
 
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/environment.cpp
-unordered_set
--
-sensors/lidar.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/sensors/lidar.h
-render/render.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/render/render.h
-processPointClouds.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.h
-processPointClouds.cpp
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.cpp
-cluster.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/cluster.h
-ransac.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/ransac.h
-kdtree.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
+../include/kdtree.h
 
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
-
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.cpp
-processPointClouds.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.h
-
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.h
+../include/processPointClouds.h
 pcl/io/pcd_io.h
 -
 pcl/common/common.h
@@ -65,10 +43,10 @@ ctime
 -
 chrono
 -
-render/box.h
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/render/box.h
+../src/render/box.h
+../src/render/box.h
 
-/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/ransac.h
+../include/ransac.h
 unordered_set
 -
 random
@@ -77,6 +55,32 @@ iostream
 -
 cmath
 -
+
+../src/render/box.h
+Eigen/Geometry
+-
+
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/environment.cpp
+unordered_set
+-
+sensors/lidar.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/sensors/lidar.h
+render/render.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/render/render.h
+processPointClouds.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.h
+processPointClouds.cpp
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.cpp
+cluster.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/cluster.h
+ransac.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/ransac.h
+kdtree.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/kdtree.h
+
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.cpp
+processPointClouds.h
+/home/kerwin/workspace/LiDAR-Obstacle-Detection/src/processPointClouds.h
 
 /home/kerwin/workspace/LiDAR-Obstacle-Detection/src/render/box.h
 Eigen/Geometry

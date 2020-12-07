@@ -17,7 +17,7 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
-#include "render/box.h"
+#include "../src/render/box.h"
 
 template<typename PointT>
 class ProcessPointClouds {

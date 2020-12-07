@@ -52,6 +52,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/libxml2"
   "/usr/include/jsoncpp"
   "/usr/include/tcl"
+  "../include"
   "/usr/include/pcl-1.8"
   "/usr/include/eigen3"
   "/usr/include/ni"
