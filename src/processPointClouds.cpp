@@ -300,16 +300,16 @@ std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::
 }
 
 template<typename PointT>
-std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> 
-                ProcessPointClouds<PointT>::MySeparateClouds(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, int maxIterations, float distanceTol)
+std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> 
+                ProcessPointClouds<PointT>::MySeparateClouds(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceTol)
 {
     std::unordered_set<int> planeIndices = Ransac3D(cloud, maxIterations, distanceTol); // 100, 0.2
     pcl::PointIndices::Ptr groundPlane (new pcl::PointIndices);
     for(auto &ind: planeIndices) groundPlane->indices.push_back(ind);
 
-    pcl::PointCloud<pcl::PointXYZI>::Ptr groundPlaneCloud (new pcl::PointCloud<pcl::PointXYZI>());
-    pcl::PointCloud<pcl::PointXYZI>::Ptr obstacles (new pcl::PointCloud<pcl::PointXYZI>());
-    pcl::ExtractIndices<pcl::PointXYZI> extract;
+    typename pcl::PointCloud<PointT>::Ptr groundPlaneCloud (new pcl::PointCloud<PointT>());
+    typename pcl::PointCloud<PointT>::Ptr obstacles (new pcl::PointCloud<PointT>());
+    typename pcl::ExtractIndices<PointT> extract;
     extract.setInputCloud(cloud);
     extract.setIndices(groundPlane);
     extract.setNegative(false); // extract the inliers (ground plane)
@@ -321,8 +321,8 @@ std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>:
 }
 
 template<typename PointT>
-std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> 
-            ProcessPointClouds<PointT>::MyClustering(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, float clusterTolerance, int minSize, int maxSize)
+std::vector<typename pcl::PointCloud<PointT>::Ptr> 
+            ProcessPointClouds<PointT>::MyClustering(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize, int maxSize)
 {
     // build the kd-tree
     KdTree *obstaclesTree (new KdTree());
@@ -334,10 +334,10 @@ std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr>
         obstaclesTree->insert(point, ind);
     }
 
-    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters;
+    std::vector<typename pcl::PointCloud<PointT>::Ptr> cloudClusters;
     std::vector<std::vector<int>> obsClusters = euclideanCluster(obsPoints, obstaclesTree, clusterTolerance, minSize, maxSize); // 0.47, 10, 2000
     for(std::vector<int> clusterIndices: obsClusters) {
-        pcl::PointCloud<pcl::PointXYZI>::Ptr cluster (new pcl::PointCloud<pcl::PointXYZI>());
+        typename pcl::PointCloud<PointT>::Ptr cluster (new pcl::PointCloud<PointT>());
         for(int &ind: clusterIndices)
             cluster->points.emplace_back(std::move(cloud->points[ind]));
 

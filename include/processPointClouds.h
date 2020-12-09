@@ -58,9 +58,9 @@ public:
     std::vector<boost::filesystem::path> streamPcd(std::string dataPath);
 
     // self-implemented
-    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> MySeparateClouds(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, int maxIterations, float distanceTol);
+    std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> MySeparateClouds(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceTol);
 
-    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> MyClustering(pcl::PointCloud<pcl::PointXYZI>::Ptr cloud, float clusterTolerance, int minSize = 0, int maxSize = INT_MAX);   
+    std::vector<typename pcl::PointCloud<PointT>::Ptr> MyClustering(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize = 0, int maxSize = INT_MAX);   
   
 };
 #endif /* PROCESSPOINTCLOUDS_H_ */
